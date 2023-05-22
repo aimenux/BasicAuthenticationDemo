@@ -1,0 +1,27 @@
+﻿###
+
+GET https://localhost:5000/api/movies/list
+
+###
+
+GET https://localhost:5000/api/movies/1
+
+###
+
+GET https://localhost:5000/api/movies/list
+Authorization: Basic VXNlckFiYzpQYXNzMTIz
+
+###
+
+GET https://localhost:5000/api/movies/1
+Authorization: Basic VXNlckFiYzpQYXNzMTIz
+
+###
+
+GET https://localhost:5000/api/movies/list
+Authorization: Basic vXNlckFiYzpQYXNzMTIZ
+
+###
+
+GET https://localhost:5000/api/movies/1
+Authorization: Basic vXNlckFiYzpQYXNzMTIZ
