@@ -24,4 +24,4 @@ In this repo, i m using various ways to support basic authentication in web api 
 >
 > :eight: `Example08` use minimal api with basic authentication based on a custom authentication scheme
 > 
-**`Tools`** : net 7.0, web api, integration-testing, fluent-assertions, nsubstitute, xunit
+**`Tools`** : net 8.0, web api, integration-testing, fluent-assertions, nsubstitute, xunit
