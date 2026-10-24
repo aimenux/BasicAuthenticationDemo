@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using static Example07.Tests.Helpers.AuthenticationHeaderBuilder;
@@ -21,6 +22,10 @@ internal class WebApiTestsFixture : WebApplicationFactory<Program>
     {
         builder.ConfigureAppConfiguration((_, configBuilder) =>
         {
+            configBuilder.AddInMemoryCollection(new Dictionary<string, string>
+            {
+                ["Https:Port"] = "5000"
+            });
         });
 
         builder.ConfigureTestServices(services =>

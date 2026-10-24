@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net.Http.Headers;
 using System.Net;
 using AwesomeAssertions;
 
@@ -113,5 +114,36 @@ public class WebApiTests
 
         // assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task Should_Get_Movies_Over_Https_Returns_Hsts_Header()
+    {
+        // arrange
+        await using var fixture = new WebApiTestsFixture();
+        var client = fixture.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            BaseAddress = new Uri("https://api.example.test")
+        });
+
+        // act
+        var response = await client.GetAsync("api/movies/1");
+
+        // assert
+        response.Headers.Contains("Strict-Transport-Security").Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Should_Get_Movies_Over_Http_Returns_No_Hsts_Header()
+    {
+        // arrange
+        await using var fixture = new WebApiTestsFixture();
+        var client = fixture.CreateClient();
+
+        // act
+        var response = await client.GetAsync("api/movies/1");
+
+        // assert
+        response.Headers.Contains("Strict-Transport-Security").Should().BeFalse();
     }
 }

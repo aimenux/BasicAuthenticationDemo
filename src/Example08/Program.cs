@@ -1,9 +1,11 @@
+using Example08;
 using Example08.Infrastructure;
 using Example08.Presentation;
 using Example08.Presentation.Authentication;
 using Example08.Presentation.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args)
+    .WithHttpsOnly()
     .AddPresentation()
     .AddInfrastructure();
 
@@ -17,6 +19,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseHsts();
 
 app.UseHttpsRedirection();
 
