@@ -3,7 +3,7 @@ using Example03.Infrastructure;
 using Example03.Presentation;
 
 var app = WebApplication.CreateBuilder(args)
-    .WithHttpsOnly()
+    .WithHttpsCheck()
     .AddPresentation()
     .AddInfrastructure()
     .Build();

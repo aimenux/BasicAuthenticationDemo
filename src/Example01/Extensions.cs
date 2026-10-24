@@ -2,7 +2,7 @@ namespace Example01;
 
 public static class WebApplicationBuilderExtensions
 {
-    public static WebApplicationBuilder WithHttpsOnly(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder WithHttpsCheck(this WebApplicationBuilder builder)
     {
         var httpsPort = GetHttpsPort(builder.Configuration);
 

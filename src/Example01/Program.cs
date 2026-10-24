@@ -4,7 +4,7 @@ using Example01.Presentation;
 using Example01.Presentation.Authentication;
 
 var app = WebApplication.CreateBuilder(args)
-    .WithHttpsOnly()
+    .WithHttpsCheck()
     .AddPresentation()
     .AddInfrastructure()
     .Build();

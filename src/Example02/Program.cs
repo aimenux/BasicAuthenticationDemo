@@ -5,7 +5,7 @@ using Example02.Presentation.Authentication;
 using Example02.Presentation.Endpoints;
 
 var app = WebApplication.CreateBuilder(args)
-    .WithHttpsOnly()
+    .WithHttpsCheck()
     .AddPresentation()
     .AddInfrastructure()
     .Build();

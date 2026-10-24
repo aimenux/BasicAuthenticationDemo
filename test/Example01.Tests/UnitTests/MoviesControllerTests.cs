@@ -33,7 +33,7 @@ public class MoviesControllerTests
         result.Should().BeOfType<OkObjectResult>();
         result
             .As<OkObjectResult>().Value
-            .As<IEnumerable<Movie>>()
+            .As<IReadOnlyCollection<Movie>>()
             .Should().NotBeNullOrEmpty();
     }
     

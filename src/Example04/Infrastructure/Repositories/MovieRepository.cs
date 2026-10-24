@@ -4,7 +4,7 @@ namespace Example04.Infrastructure.Repositories;
 
 public class MovieRepository : IMovieRepository
 {
-    private static readonly List<Movie> Movies = 
+    private static readonly List<Movie> Movies =
     [
         new Movie
         {
@@ -18,9 +18,9 @@ public class MovieRepository : IMovieRepository
         }
     ];
 
-    public Task<IReadOnlyList<Movie>> GetMoviesAsync(CancellationToken cancellationToken)
+    public Task<IReadOnlyCollection<Movie>> GetMoviesAsync(CancellationToken cancellationToken)
     {
-        return Task.FromResult<IReadOnlyList<Movie>>(Movies.AsReadOnly());
+        return Task.FromResult<IReadOnlyCollection<Movie>>(Movies.AsReadOnly());
     }
 
     public Task<Movie> GetMovieByIdAsync(int movieId, CancellationToken cancellationToken)

@@ -139,7 +139,7 @@ What the demo **does** implement:
 
 | ✅ Measure | Where | Why it matters |
 |-----------|-------|----------------|
-| 🔐 **HTTPS-only listener** | `WithHttpsOnly()` in each `Program.cs` | Kestrel never opens an HTTP socket, so plain-HTTP clients are refused |
+| 🔐 **HTTPS-only listener** | `WithHttpsCheck()` in each `Program.cs` | Kestrel never opens an HTTP socket, so plain-HTTP clients are refused |
 | 🔢 **Configurable HTTPS port** | `Https:Port` in `appsettings.Development.json` | No port hardcoded in code; `--urls` cannot add an HTTP listener |
 | ⏳ **HSTS** | `app.UseHsts()` | Browsers that have visited over HTTPS will upgrade future requests |
 | 🪪 **`WWW-Authenticate: Basic`** | Every `401` response | Browsers show a login prompt, and clients can discover the scheme |
@@ -218,7 +218,7 @@ BasicAuthenticationDemo/
 └── 📁 test/
 ```
 
-Each example is self-contained: its own `Program.cs`, `Extensions.cs` (`WithHttpsOnly`), `appsettings.*.json`, and `Presentation/Authentication/` folder.
+Each example is self-contained: its own `Program.cs`, `Extensions.cs` (`WithHttpsCheck`), `appsettings.*.json`, and `Presentation/Authentication/` folder.
 
 ---
 

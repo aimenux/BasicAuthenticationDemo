@@ -30,10 +30,10 @@ public class MoviesEndpointsTests
         var result = await endpoints.GetMoviesAsync(CancellationToken.None);
 
         // assert
-        result.Should().BeOfType<Ok<IReadOnlyList<Movie>>>();
+        result.Should().BeOfType<Ok<IReadOnlyCollection<Movie>>>();
         result
-            .As<Ok<IReadOnlyList<Movie>>>().Value
-            .As<IEnumerable<Movie>>()
+            .As<Ok<IReadOnlyCollection<Movie>>>().Value
+            .As<IReadOnlyCollection<Movie>>()
             .Should().NotBeNullOrEmpty();
     }
     
