@@ -216,8 +216,6 @@ BasicAuthenticationDemo/
 │   ├── 📁 Example07/          # Controllers + custom authentication scheme
 │   └── 📁 Example08/          # Minimal API + custom authentication scheme
 └── 📁 test/
-    ├── 📁 Example01.Tests/    # UnitTests/ · IntegrationTests/
-    └── …                      # Same layout for Examples 02–08
 ```
 
 Each example is self-contained: its own `Program.cs`, `Extensions.cs` (`WithHttpsOnly`), `appsettings.*.json`, and `Presentation/Authentication/` folder.
@@ -231,7 +229,7 @@ Each example is self-contained: its own `Program.cs`, `Extensions.cs` (`WithHttp
 | 🟣 **.NET 10 / ASP.NET Core** | Web API, Kestrel, authentication and authorization |
 | 📘 **Swagger / Swashbuckle** | Interactive API docs (Development only) |
 | 🧪 **xUnit** | Test framework |
-| ✨ **AwesomeAssertions** (FluentAssertions fork) | Readable assertions |
+| ✨ **AwesomeAssertions** | Readable assertions |
 | 🎭 **NSubstitute** | Mocking repositories |
 | 🔁 **GitHub Actions** | CI build and test |
 
