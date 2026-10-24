@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Security.Cryptography;
+using System.Net;
 using System.Text;
 
 namespace Example01.Presentation.Authentication;
@@ -16,7 +17,7 @@ public class BasicMiddleware
     {
         if (!context.Request.Headers.TryGetValue(BasicConstants.BasicHeaderName, out var authorisationHeader))
         {
-            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            RespondUnauthorized(context);
             await context.Response.WriteAsync("Authorization header is missing");
             return;
         }
@@ -24,22 +25,22 @@ public class BasicMiddleware
         var headerValue = authorisationHeader.ToString();
         if (!headerValue.StartsWith($"{BasicConstants.BasicScheme} ", StringComparison.OrdinalIgnoreCase))
         {
-            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            RespondUnauthorized(context);
             await context.Response.WriteAsync("Authorization header is invalid");
             return;
         }
 
         if (!TryGetUserCredentials(headerValue, out var userCredentials))
         {
-            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            RespondUnauthorized(context);
             await context.Response.WriteAsync("Authorization header is invalid");
             return;
         }
 
         var (username, password) = userCredentials;
-        if (username != BasicConstants.Username || password != BasicConstants.Password)
+        if (!IsValidUsername(username) | !IsValidPassword(password))
         {
-            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            RespondUnauthorized(context);
             await context.Response.WriteAsync("User credentials are invalid");
             return;
         }
@@ -63,6 +64,26 @@ public class BasicMiddleware
             userCredentials = (null, null);
             return false;
         }
+    }
+    
+    private static bool IsValidUsername(string username)
+    {
+        var suppliedHash = SHA256.HashData(Encoding.UTF8.GetBytes(username));
+        var expectedHash = SHA256.HashData(Encoding.UTF8.GetBytes(BasicConstants.Username));
+        return CryptographicOperations.FixedTimeEquals(suppliedHash, expectedHash);
+    }
+
+    private static bool IsValidPassword(string password)
+    {
+        var suppliedHash = SHA256.HashData(Encoding.UTF8.GetBytes(password));
+        var expectedHash = SHA256.HashData(Encoding.UTF8.GetBytes(BasicConstants.Password));
+        return CryptographicOperations.FixedTimeEquals(suppliedHash, expectedHash);
+    }
+
+    private static void RespondUnauthorized(HttpContext context)
+    {
+        context.Response.Headers.WWWAuthenticate = BasicConstants.BasicScheme;
+        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
     }
 }
 

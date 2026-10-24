@@ -3,11 +3,9 @@ using Example08.Presentation;
 using Example08.Presentation.Authentication;
 using Example08.Presentation.Endpoints;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddEndpoints();
-builder.Services.AddInfrastructure();
-builder.Services.AddSwagger();
+var builder = WebApplication.CreateBuilder(args)
+    .AddPresentation()
+    .AddInfrastructure();
 
 builder.Services.AddBasicAuthentication();
 builder.Services.AddAuthorization();

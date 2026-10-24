@@ -3,13 +3,10 @@ using Example06.Presentation;
 using Example06.Presentation.Authentication;
 using Example06.Presentation.Endpoints;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddEndpoints();
-builder.Services.AddInfrastructure();
-builder.Services.AddSwagger();
-
-var app = builder.Build();
+var app = WebApplication.CreateBuilder(args)
+    .AddPresentation()
+    .AddInfrastructure()
+    .Build();
 
 if (app.Environment.IsDevelopment())
 {

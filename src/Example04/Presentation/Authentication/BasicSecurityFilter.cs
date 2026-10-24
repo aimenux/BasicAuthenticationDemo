@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.Cryptography;
+using System.Text;
 
 namespace Example04.Presentation.Authentication;
 
@@ -8,24 +9,24 @@ public class BasicSecurityFilter : IEndpointFilter
     {
         if (!context.HttpContext.Request.Headers.TryGetValue(BasicConstants.BasicHeaderName, out var authorisationHeader))
         {
-            return HttpResults.Unauthorized("Basic header is missing");
+            return Unauthorized(context, "Basic header is missing");
         }
 
         var headerValue = authorisationHeader.ToString();
         if (!headerValue.StartsWith($"{BasicConstants.BasicScheme} ", StringComparison.OrdinalIgnoreCase))
         {
-            return HttpResults.Unauthorized("Basic scheme is missing");
+            return Unauthorized(context, "Basic scheme is missing");
         }
 
         if (!TryGetUserCredentials(headerValue, out var userCredentials))
         {
-            return HttpResults.Unauthorized("Authorization header is invalid");
+            return Unauthorized(context, "Authorization header is invalid");
         }
 
         var (username, password) = userCredentials;
-        if (username != BasicConstants.Username || password != BasicConstants.Password)
+        if (!IsValidUsername(username) | !IsValidPassword(password))
         {
-            return HttpResults.Unauthorized("User credentials are invalid");
+            return Unauthorized(context, "User credentials are invalid");
         }
         
         return await next(context);
@@ -47,5 +48,25 @@ public class BasicSecurityFilter : IEndpointFilter
             userCredentials = (null, null);
             return false;
         }
+    }
+
+    private static bool IsValidUsername(string username)
+    {
+        var suppliedHash = SHA256.HashData(Encoding.UTF8.GetBytes(username));
+        var expectedHash = SHA256.HashData(Encoding.UTF8.GetBytes(BasicConstants.Username));
+        return CryptographicOperations.FixedTimeEquals(suppliedHash, expectedHash);
+    }
+
+    private static bool IsValidPassword(string password)
+    {
+        var suppliedHash = SHA256.HashData(Encoding.UTF8.GetBytes(password));
+        var expectedHash = SHA256.HashData(Encoding.UTF8.GetBytes(BasicConstants.Password));
+        return CryptographicOperations.FixedTimeEquals(suppliedHash, expectedHash);
+    }
+    
+    private static IResult Unauthorized(EndpointFilterInvocationContext context, string message)
+    {
+        context.HttpContext.Response.Headers.WWWAuthenticate = BasicConstants.BasicScheme;
+        return HttpResults.Unauthorized(message);
     }
 }

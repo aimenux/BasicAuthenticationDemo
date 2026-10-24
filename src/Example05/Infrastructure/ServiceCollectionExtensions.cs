@@ -4,9 +4,9 @@ namespace Example05.Infrastructure;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static WebApplicationBuilder AddInfrastructure(this WebApplicationBuilder builder)
     {
-        services.AddScoped<IMovieRepository, MovieRepository>();
-        return services;
+        builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+        return builder;
     }
 }

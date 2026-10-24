@@ -1,9 +1,8 @@
 using Example06.Domain;
 using Example06.Infrastructure.Repositories;
 using Example06.Presentation.Endpoints;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
 namespace Example06.Tests.UnitTests;
@@ -25,16 +24,15 @@ public class MoviesEndpointsTests
                     Title = "Matrix"
                 }
             });
-        var logger = NullLogger<MoviesEndpoints>.Instance;
-        var endpoints = new MoviesEndpoints(repository, logger);
+        var endpoints = new MoviesEndpoints(repository);
 
         // act
         var result = await endpoints.GetMoviesAsync(CancellationToken.None);
 
         // assert
-        result.Should().BeOfType<Ok<IEnumerable<Movie>>>();
+        result.Should().BeOfType<Ok<IReadOnlyList<Movie>>>();
         result
-            .As<Ok<IEnumerable<Movie>>>().Value
+            .As<Ok<IReadOnlyList<Movie>>>().Value
             .As<IEnumerable<Movie>>()
             .Should().NotBeNullOrEmpty();
     }
@@ -53,8 +51,7 @@ public class MoviesEndpointsTests
                 Id = 1,
                 Title = "Matrix"
             });
-        var logger = NullLogger<MoviesEndpoints>.Instance;
-        var endpoints = new MoviesEndpoints(repository, logger);
+        var endpoints = new MoviesEndpoints(repository);
 
         // act
         var result = await endpoints.GetMovieByIdAsync(movieId, CancellationToken.None);

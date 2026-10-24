@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Security.Cryptography;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
@@ -11,11 +12,9 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicAuthenticat
     public BasicAuthenticationHandler(
         IOptionsMonitor<BasicAuthenticationOptions> options,
         ILoggerFactory logger,
-        UrlEncoder encoder,
-        ISystemClock clock) : base(options,
+        UrlEncoder encoder) : base(options,
         logger,
-        encoder,
-        clock)
+        encoder)
     {
     }
 
@@ -38,7 +37,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicAuthenticat
         }
         
         var (username, password) = userCredentials;
-        if (username != BasicConstants.Username || password != BasicConstants.Password)
+        if (!IsValidUsername(username) | !IsValidPassword(password))
         {
             return Task.FromResult(AuthenticateResult.Fail("User credentials are invalid"));
         }
@@ -69,5 +68,25 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicAuthenticat
             userCredentials = (null, null);
             return false;
         }
+    }
+
+    private static bool IsValidUsername(string username)
+    {
+        var suppliedHash = SHA256.HashData(Encoding.UTF8.GetBytes(username));
+        var expectedHash = SHA256.HashData(Encoding.UTF8.GetBytes(BasicConstants.Username));
+        return CryptographicOperations.FixedTimeEquals(suppliedHash, expectedHash);
+    }
+
+    private static bool IsValidPassword(string password)
+    {
+        var suppliedHash = SHA256.HashData(Encoding.UTF8.GetBytes(password));
+        var expectedHash = SHA256.HashData(Encoding.UTF8.GetBytes(BasicConstants.Password));
+        return CryptographicOperations.FixedTimeEquals(suppliedHash, expectedHash);
+    }
+    
+    protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
+    {
+        Response.Headers.WWWAuthenticate = BasicConstants.BasicScheme;
+        await base.HandleChallengeAsync(properties);
     }
 }

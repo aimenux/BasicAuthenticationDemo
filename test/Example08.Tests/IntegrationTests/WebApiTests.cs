@@ -1,5 +1,6 @@
-﻿using System.Net;
-using FluentAssertions;
+﻿using System.Net.Http.Headers;
+using System.Net;
+using AwesomeAssertions;
 
 namespace Example08.Tests.IntegrationTests;
 
@@ -11,7 +12,7 @@ public class WebApiTests
     public async Task Should_Get_Movies_Returns_Success(string route)
     {
         // arrange
-        var fixture = new WebApiTestsFixture();
+        await using var fixture = new WebApiTestsFixture();
         var client = fixture.CreateClient();
 
         // act
@@ -30,7 +31,7 @@ public class WebApiTests
     {
         // arrange
         var apiKeyHeaderValue = Guid.NewGuid().ToString();
-        var fixture = new WebApiTestsFixture(apiKeyHeaderValue);
+        await using var fixture = new WebApiTestsFixture(apiKeyHeaderValue);
         var client = fixture.CreateClient();
 
         // act
@@ -38,5 +39,78 @@ public class WebApiTests
 
         // assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task Should_Get_Movies_Without_Authorization_Header_Returns_Unauthorized()
+    {
+        // arrange
+        await using var fixture = new WebApiTestsFixture();
+        var client = fixture.CreateClient();
+        client.DefaultRequestHeaders.Authorization = null;
+
+        // act
+        var response = await client.GetAsync("api/movies/1");
+
+        // assert
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task Should_Get_Movies_With_Wrong_Password_Returns_Unauthorized()
+    {
+        // arrange
+        await using var fixture = new WebApiTestsFixture(password: Guid.NewGuid().ToString());
+        var client = fixture.CreateClient();
+
+        // act
+        var response = await client.GetAsync("api/movies/1");
+
+        // assert
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task Should_Get_Movies_With_Malformed_Base64_Returns_Unauthorized()
+    {
+        // arrange
+        await using var fixture = new WebApiTestsFixture();
+        var client = fixture.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", "not-base64!!");
+
+        // act
+        var response = await client.GetAsync("api/movies/1");
+
+        // assert
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task Should_Get_Movies_With_Malformed_Scheme_Returns_Unauthorized()
+    {
+        // arrange
+        await using var fixture = new WebApiTestsFixture();
+        var client = fixture.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "token");
+
+        // act
+        var response = await client.GetAsync("api/movies/1");
+
+        // assert
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task Should_Get_Unknown_Movie_Returns_NotFound()
+    {
+        // arrange
+        await using var fixture = new WebApiTestsFixture();
+        var client = fixture.CreateClient();
+
+        // act
+        var response = await client.GetAsync("api/movies/999");
+
+        // assert
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

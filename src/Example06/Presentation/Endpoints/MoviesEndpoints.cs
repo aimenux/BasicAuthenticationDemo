@@ -11,12 +11,10 @@ public interface IMoviesEndpoints
 public class MoviesEndpoints : IMoviesEndpoints
 {
     private readonly IMovieRepository _repository;
-    private readonly ILogger<MoviesEndpoints> _logger;
 
-    public MoviesEndpoints(IMovieRepository repository, ILogger<MoviesEndpoints> logger)
+    public MoviesEndpoints(IMovieRepository repository)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task<IResult> GetMoviesAsync(CancellationToken cancellationToken)

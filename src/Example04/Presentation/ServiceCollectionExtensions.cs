@@ -1,4 +1,4 @@
-﻿using Example04.Presentation.Endpoints;
+using Example04.Presentation.Endpoints;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -6,13 +6,14 @@ namespace Example04.Presentation;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddEndpoints(this IServiceCollection services)
+    public static WebApplicationBuilder AddPresentation(this WebApplicationBuilder builder)
     {
-        services.AddScoped<IMoviesEndpoints, MoviesEndpoints>();
-        return services;
+        builder.Services.AddScoped<IMoviesEndpoints, MoviesEndpoints>();
+        builder.Services.AddSwagger();
+        return builder;
     }
-    
-    public static IServiceCollection AddSwagger(this IServiceCollection services)
+
+    private static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
         services.AddEndpointsApiExplorer();

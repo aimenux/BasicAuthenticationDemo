@@ -1,5 +1,5 @@
 ﻿using Example06.Presentation.Authentication;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using static Example06.Tests.Helpers.AuthenticationHeaderBuilder;

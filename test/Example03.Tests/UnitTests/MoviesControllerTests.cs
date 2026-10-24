@@ -1,9 +1,8 @@
 using Example03.Domain;
 using Example03.Infrastructure.Repositories;
 using Example03.Presentation.Controllers;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
 namespace Example03.Tests.UnitTests;
@@ -25,8 +24,7 @@ public class MoviesControllerTests
                     Title = "Matrix"
                 }
             });
-        var logger = NullLogger<MoviesController>.Instance;
-        var controller = new MoviesController(repository, logger);
+        var controller = new MoviesController(repository);
 
         // act
         var result = await controller.GetMoviesAsync(CancellationToken.None);
@@ -53,8 +51,7 @@ public class MoviesControllerTests
                 Id = 1,
                 Title = "Matrix"
             });
-        var logger = NullLogger<MoviesController>.Instance;
-        var controller = new MoviesController(repository, logger);
+        var controller = new MoviesController(repository);
 
         // act
         var result = await controller.GetMovieByIdAsync(movieId, CancellationToken.None);

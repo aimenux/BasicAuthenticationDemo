@@ -1,4 +1,4 @@
-﻿using Example05.Presentation.Authentication;
+using Example05.Presentation.Authentication;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -6,9 +6,17 @@ namespace Example05.Presentation;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddSwagger(this IServiceCollection services)
+    public static WebApplicationBuilder AddPresentation(this WebApplicationBuilder builder)
     {
-        services.AddScoped<BasicSecurityFilter>();
+        builder.Services.AddRouting(options => options.LowercaseUrls = true);
+        builder.Services.AddControllers();
+        builder.Services.AddScoped<BasicSecurityFilter>();
+        builder.Services.AddSwagger();
+        return builder;
+    }
+
+    private static IServiceCollection AddSwagger(this IServiceCollection services)
+    {
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
