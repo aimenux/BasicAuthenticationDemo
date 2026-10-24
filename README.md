@@ -1,6 +1,6 @@
 [![.NET](https://github.com/aimenux/BasicAuthenticationDemo/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/aimenux/BasicAuthenticationDemo/actions/workflows/ci.yml)
 
-# BasicAuthenticationDemo
+# 🔐 BasicAuthenticationDemo
 
 > 🧪 **Eight ways to add HTTP Basic authentication to ASP.NET Core Web APIs.**
 
@@ -207,15 +207,18 @@ If you must keep Basic authentication, at least:
 ```text
 BasicAuthenticationDemo/
 ├── 📁 src/
-│   ├── 📁 Example01/          # Controllers + middleware
-│   ├── 📁 Example02/          # Minimal API + middleware
-│   ├── 📁 Example03/          # Controllers + global authorization filter
-│   ├── 📁 Example04/          # Minimal API + route group endpoint filter
-│   ├── 📁 Example05/          # Controllers + per-action authorization filter
-│   ├── 📁 Example06/          # Minimal API + per-route endpoint filter
-│   ├── 📁 Example07/          # Controllers + custom authentication scheme
-│   └── 📁 Example08/          # Minimal API + custom authentication scheme
-└── 📁 test/
+│   ├── 📁 Example01/                   # Controllers + middleware
+│   ├── 📁 Example02/                   # Minimal API + middleware
+│   ├── 📁 Example03/                   # Controllers + global authorization filter
+│   ├── 📁 Example04/                   # Minimal API + route group endpoint filter
+│   ├── 📁 Example05/                   # Controllers + per-action authorization filter
+│   ├── 📁 Example06/                   # Minimal API + per-route endpoint filter
+│   ├── 📁 Example07/                   # Controllers + custom authentication scheme
+│   └── 📁 Example08/                   # Minimal API + custom authentication scheme
+├── 📁 test/                            # One xUnit project per example
+├── 📄 Directory.Build.props            # Shared build settings
+├── 📄 Directory.Packages.props         # Central package versions
+└── 📄 global.json                      # Pinned .NET SDK
 ```
 
 Each example is self-contained: its own `Program.cs`, `Extensions.cs` (`WithHttpsCheck`), `appsettings.*.json`, and `Presentation/Authentication/` folder.
