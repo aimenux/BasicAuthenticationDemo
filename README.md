@@ -77,6 +77,12 @@ Then open **Swagger UI** (Development environment) at the HTTPS URL for that exa
 
 > 🔌 Each example listens on its own HTTPS port (`5001`–`5008`, see the table above), set in `appsettings.Development.json` (`Https:Port`). Examples can run side by side. Integration tests use port `5000` in memory and never bind it.
 
+#### 🔌 How the HTTPS port is chosen
+
+1. `Https:Port` from configuration (`appsettings.Development.json`, or an environment variable such as `Https__Port`).
+2. Otherwise, the HTTPS URL from `urls`, which is populated from `ASPNETCORE_URLS`, the `--urls` argument, or the launch profile `applicationUrl`.
+3. If neither is set, the app fails at startup with `No HTTPS port configured`.
+
 ### 3️⃣ Call the API
 
 Demo credentials (defined in each example's `BasicConstants.cs`):
@@ -100,16 +106,16 @@ curl http://localhost:5001/api/movies/list
 
 ## 🧩 Examples at a glance
 
-| # | API style | 🔑 Mechanism | 📍 Scope | ❓ Unknown route, no credentials | 🔌 Dev HTTPS port |
+| # | 🧱 Style | 🔑 Mechanism | 📍 Scope | ❓ Status Code | 🔌 Port |
 |---|-----------|--------------|----------|----------------------------------|-------------------|
-| 01 | 🎛️ Controllers | Middleware | Global | **401** | `5001` |
-| 02 | ⚡ Minimal API | Middleware | Global | **401** | `5002` |
-| 03 | 🎛️ Controllers | Authorization filter | Global | 404 | `5003` |
-| 04 | ⚡ Minimal API | Endpoint filter | Per route group | 404 | `5004` |
-| 05 | 🎛️ Controllers | Authorization filter | Per action (attribute) | 404 | `5005` |
-| 06 | ⚡ Minimal API | Endpoint filter | Per route | 404 | `5006` |
-| 07 | 🎛️ Controllers | Custom authentication scheme | Per route group | 404 | `5007` |
-| 08 | ⚡ Minimal API | Custom authentication scheme | Per route | 404 | `5008` |
+| 01 | Controllers | Middleware | Global | **401** | `5001` |
+| 02 | Minimal API | Middleware | Global | **401** | `5002` |
+| 03 | Controllers | Authorization filter | Global | 404 | `5003` |
+| 04 | Minimal API | Endpoint filter | Per route group | 404 | `5004` |
+| 05 | Controllers | Authorization filter | Per action (attribute) | 404 | `5005` |
+| 06 | Minimal API | Endpoint filter | Per route | 404 | `5006` |
+| 07 | Controllers | Custom authentication scheme | Per route group | 404 | `5007` |
+| 08 | Minimal API | Custom authentication scheme | Per route | 404 | `5008` |
 
 ### 🔍 Reading the table
 

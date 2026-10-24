@@ -22,7 +22,6 @@ public static class WebApplicationBuilderExtensions
             return port;
         }
 
-        // "urls" is populated from ASPNETCORE_URLS, --urls or the launch profile applicationUrl.
         var httpsUri = (configuration["urls"] ?? string.Empty)
             .Split(';', StringSplitOptions.RemoveEmptyEntries)
             .Select(url => new Uri(url))
