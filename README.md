@@ -229,7 +229,7 @@ Each example is self-contained: its own `Program.cs`, `Extensions.cs` (`WithHttp
 
 | Tool | Purpose |
 |------|---------|
-| 🟣 **.NET 10 / ASP.NET Core** | Web API, Kestrel, authentication and authorization |
+| 🟣 **.NET 11 / ASP.NET Core** | Web API, Kestrel, authentication and authorization |
 | 📘 **Swagger / Swashbuckle** | Interactive API docs (Development only) |
 | 🧪 **xUnit** | Test framework |
 | ✨ **AwesomeAssertions** | Readable assertions |
