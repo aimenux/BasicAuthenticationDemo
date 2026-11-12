@@ -1,3 +1,4 @@
+using Example07.Presentation.Authentication;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -10,6 +11,8 @@ public static class ServiceCollectionExtensions
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
         builder.Services.AddControllers();
         builder.Services.AddSwagger();
+        builder.Services.AddBasicAuthentication();
+        builder.Services.AddAuthorization();
         return builder;
     }
 

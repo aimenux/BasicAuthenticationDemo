@@ -31,8 +31,9 @@ public class WebApiTests
     public async Task Should_Get_Movies_Returns_Unauthorized(string route)
     {
         // arrange
-        var apiKeyHeaderValue = Guid.NewGuid().ToString();
-        await using var fixture = new WebApiTestsFixture(apiKeyHeaderValue);
+        var username = Guid.NewGuid().ToString();
+        var password = Guid.NewGuid().ToString();
+        await using var fixture = new WebApiTestsFixture(username, password);
         var client = fixture.CreateClient();
 
         // act

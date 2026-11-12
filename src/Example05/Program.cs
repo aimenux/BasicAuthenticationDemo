@@ -2,8 +2,7 @@ using Example05;
 using Example05.Infrastructure;
 using Example05.Presentation;
 
-var app = WebApplication.CreateBuilder(args)
-    .WithHttpsCheck()
+var app = WebApplication.CreateBuilder(args, enforceHttps: true)
     .AddPresentation()
     .AddInfrastructure()
     .Build();

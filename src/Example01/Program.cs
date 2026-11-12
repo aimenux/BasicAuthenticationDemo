@@ -3,8 +3,7 @@ using Example01.Infrastructure;
 using Example01.Presentation;
 using Example01.Presentation.Authentication;
 
-var app = WebApplication.CreateBuilder(args)
-    .WithHttpsCheck()
+var app = WebApplication.CreateBuilder(args, enforceHttps: true)
     .AddPresentation()
     .AddInfrastructure()
     .Build();

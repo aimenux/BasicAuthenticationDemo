@@ -1,17 +1,25 @@
 namespace Example06;
 
-public static class WebApplicationBuilderExtensions
+public static class WebApplicationExtensions
 {
-    public static WebApplicationBuilder WithHttpsCheck(this WebApplicationBuilder builder)
+    extension(WebApplication)
     {
-        var httpsPort = GetHttpsPort(builder.Configuration);
-
-        builder.WebHost.ConfigureKestrel(options =>
+        public static WebApplicationBuilder CreateBuilder(string[] args, bool enforceHttps)
         {
-            options.ListenLocalhost(httpsPort, listen => listen.UseHttps());
-        });
+            var builder = WebApplication.CreateBuilder(args);
 
-        return builder;
+            if (enforceHttps)
+            {
+                var httpsPort = GetHttpsPort(builder.Configuration);
+
+                builder.WebHost.ConfigureKestrel(options =>
+                {
+                    options.ListenLocalhost(httpsPort, listen => listen.UseHttps());
+                });
+            }
+
+            return builder;
+        }
     }
 
     private static int GetHttpsPort(ConfigurationManager configuration)

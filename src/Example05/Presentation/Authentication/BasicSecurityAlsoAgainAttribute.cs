@@ -32,6 +32,7 @@ public class BasicSecurityAlsoAgainAttribute : ActionFilterAttribute
         if (!IsValidUsername(username) | !IsValidPassword(password))
         {
             context.Result = Unauthorized(context, "User credentials are invalid");
+            return;
         }
 
         await next();

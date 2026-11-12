@@ -4,8 +4,7 @@ using Example02.Presentation;
 using Example02.Presentation.Authentication;
 using Example02.Presentation.Endpoints;
 
-var app = WebApplication.CreateBuilder(args)
-    .WithHttpsCheck()
+var app = WebApplication.CreateBuilder(args, enforceHttps: true)
     .AddPresentation()
     .AddInfrastructure()
     .Build();

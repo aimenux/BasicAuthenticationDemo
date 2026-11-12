@@ -53,6 +53,7 @@ public class BasicMiddlewareTests
 
         // assert
         context.Response.StatusCode.Should().Be(401);
+        context.Response.ContentType.Should().Be("text/plain; charset=utf-8");
     }
     
     [Theory]
@@ -78,5 +79,6 @@ public class BasicMiddlewareTests
 
         // assert
         context.Response.StatusCode.Should().Be(401);
+        context.Response.ContentType.Should().Be("text/plain; charset=utf-8");
     }
 }

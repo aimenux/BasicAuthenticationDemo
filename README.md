@@ -60,7 +60,7 @@ Each example exposes the same two endpoints:
 
 ### 1️⃣ Prerequisites
 
-- 🟣 [.NET SDK 10.0](https://dotnet.microsoft.com/download) (all projects target `net10.0`)
+- 🟣 [.NET SDK 11.0](https://dotnet.microsoft.com/download) (all projects target `net11.0`)
 - 🔐 A trusted ASP.NET Core development certificate:
 
 ```bash
@@ -139,7 +139,7 @@ What the demo **does** implement:
 
 | ✅ Measure | Where | Why it matters |
 |-----------|-------|----------------|
-| 🔐 **HTTPS-only listener** | `WithHttpsCheck()` in each `Program.cs` | Kestrel never opens an HTTP socket, so plain-HTTP clients are refused |
+| 🔐 **HTTPS-only listener** | `WebApplication.CreateBuilder(args, enforceHttps: true)` in each `Program.cs` | Kestrel never opens an HTTP socket, so plain-HTTP clients are refused |
 | 🔢 **Configurable HTTPS port** | `Https:Port` in `appsettings.Development.json` | No port hardcoded in code; `--urls` cannot add an HTTP listener |
 | ⏳ **HSTS** | `app.UseHsts()` | Browsers that have visited over HTTPS will upgrade future requests |
 | 🪪 **`WWW-Authenticate: Basic`** | Every `401` response | Browsers show a login prompt, and clients can discover the scheme |
@@ -153,6 +153,7 @@ What the demo **does not** implement (on purpose, to stay focused):
 - 🔁 Credential rotation or revocation.
 - 🌐 Reverse proxy or load balancer configuration (`ForwardedHeaders`).
 - 🧾 Audit logging of authentication failures.
+- 🕵️ Generic `401` responses: middleware examples (01, 02) and filters return distinct messages (`header is missing`, `header is invalid`, `credentials are invalid`), which reveals at which stage a request failed. In production, return one generic message or an empty body.
 
 ---
 
@@ -221,7 +222,7 @@ BasicAuthenticationDemo/
 └── 📄 global.json                      # Pinned .NET SDK
 ```
 
-Each example is self-contained: its own `Program.cs`, `Extensions.cs` (`WithHttpsCheck`), `appsettings.*.json`, and `Presentation/Authentication/` folder.
+Each example is self-contained: its own `Program.cs`, `Extensions.cs` (`CreateBuilder` with `enforceHttps`), `appsettings.*.json`, and `Presentation/Authentication/` folder.
 
 ---
 

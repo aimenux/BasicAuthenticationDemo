@@ -84,6 +84,7 @@ public class BasicMiddleware
     {
         context.Response.Headers.WWWAuthenticate = BasicConstants.BasicScheme;
         context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+        context.Response.ContentType = "text/plain; charset=utf-8";
     }
 }
 

@@ -1,3 +1,4 @@
+using Example08.Presentation.Authentication;
 using Example08.Presentation.Endpoints;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -8,9 +9,17 @@ public static class ServiceCollectionExtensions
 {
     public static WebApplicationBuilder AddPresentation(this WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<IMoviesEndpoints, MoviesEndpoints>();
+        builder.Services.AddEndpoints();
         builder.Services.AddSwagger();
+        builder.Services.AddBasicAuthentication();
+        builder.Services.AddAuthorization();
         return builder;
+    }
+    
+    private static IServiceCollection AddEndpoints(this IServiceCollection services)
+    {
+        services.AddScoped<IMoviesEndpoints, MoviesEndpoints>();
+        return services;
     }
 
     private static IServiceCollection AddSwagger(this IServiceCollection services)

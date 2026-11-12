@@ -1,17 +1,11 @@
 using Example07;
 using Example07.Infrastructure;
 using Example07.Presentation;
-using Example07.Presentation.Authentication;
 
-var builder = WebApplication.CreateBuilder(args)
-    .WithHttpsCheck()
+var app = WebApplication.CreateBuilder(args, enforceHttps: true)
     .AddPresentation()
-    .AddInfrastructure();
-
-builder.Services.AddBasicAuthentication();
-builder.Services.AddAuthorization();
-
-var app = builder.Build();
+    .AddInfrastructure()
+    .Build();
 
 if (app.Environment.IsDevelopment())
 {

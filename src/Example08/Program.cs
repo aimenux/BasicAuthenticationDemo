@@ -1,18 +1,12 @@
 using Example08;
 using Example08.Infrastructure;
 using Example08.Presentation;
-using Example08.Presentation.Authentication;
 using Example08.Presentation.Endpoints;
 
-var builder = WebApplication.CreateBuilder(args)
-    .WithHttpsCheck()
+var app = WebApplication.CreateBuilder(args, enforceHttps: true)
     .AddPresentation()
-    .AddInfrastructure();
-
-builder.Services.AddBasicAuthentication();
-builder.Services.AddAuthorization();
-
-var app = builder.Build();
+    .AddInfrastructure()
+    .Build();
 
 if (app.Environment.IsDevelopment())
 {
